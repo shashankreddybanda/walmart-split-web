@@ -42,8 +42,6 @@ export async function getOrders(order_id: string): Promise<Array<any> | null> {
     try {
         const response = await client.query(`SELECT * FROM "order" WHERE order_id = '${order_id}' ORDER BY name`);
         responseSchema.parse(response.rows);
-        console.log(response.rows);
-        
         return response.rows;
     } catch (error) {
         console.error(error);
@@ -93,7 +91,6 @@ export async function getOrderUsers(order_id:number) {
     const client = await pool.connect();
     try {
         const response = await client.query(`SELECT users FROM "order" WHERE id = ${order_id};`);
-        console.log(response.rows);
     } catch(error){
         console.error(error);
     }finally {
