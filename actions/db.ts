@@ -1,7 +1,7 @@
 "use server"
 
 import { Pool } from 'pg';
-import { z } from "Zod";
+import { z } from "zod";
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
