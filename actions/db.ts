@@ -19,6 +19,12 @@ export async function getData() {
 }
 
 export async function postOrder(orders: Array<{ order_id: string, name: string, value: number }>) {
+    const pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true
+    });
+    console.log(process.env.DATABASE_URL);
+    
     const client = await pool.connect();
     console.log(orders);
     
