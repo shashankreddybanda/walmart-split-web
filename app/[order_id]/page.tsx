@@ -79,7 +79,7 @@ export default async function page({ params }: { params: { order_id: string } })
             {orders?.map((order) => <Card updateOrder={updateOrder} key={order.id} order={order} users={users}></Card>)}
             <div className="flex flex-col">
                 <p className="font-bold">Totals</p>
-                {totals.map(total => (<div className="flex gap-2"><p className=" font-semibold">{total.user}:</p> <p>{total.value.toFixed(2)}</p></div>))}
+                {totals.map(total => (<div className="flex gap-2" key={total.user}><p className=" font-semibold">{total.user}:</p> <p>{total.value.toFixed(2)}</p></div>))}
             </div>
         </div>
     )
