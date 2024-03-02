@@ -20,6 +20,8 @@ export async function getData() {
 
 export async function postOrder(orders: Array<{ order_id: string, name: string, value: number }>) {
     const client = await pool.connect();
+    console.log(orders);
+    
     try {
         orders.forEach(async (order) => {
             await client.query(`INSERT INTO "order" (order_id, name, value) VALUES (${order.order_id}, '${order.name}', ${order.value})`);

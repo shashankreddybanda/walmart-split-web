@@ -4,12 +4,11 @@ import {z} from "zod"
 
 export async function POST(request: Request, response: NextResponse) {
     const reqSchema = z.array(z.object({
-        order_id: z.string(),
         name: z.string(),
         value: z.number()
     }))
     const req = await request.json();
-    // console.log(req);
+    console.log(req);
     
     try{
         reqSchema.parse(req);
