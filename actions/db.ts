@@ -28,11 +28,14 @@ export async function postOrder(orders: Array<{ order_id: string, name: string, 
     const client = await pool.connect();
     
     try {
-        orders.forEach(async (order) => {
-            console.log(order.name);
+        // orders.forEach(async (order) => {
+        //     console.log(order.name);
             
-            await client.query(`INSERT INTO "order" (order_id, name, value) VALUES (${order.order_id}, '${order.name}', ${order.value})`);
-        })
+        //     await client.query(`INSERT INTO "order" (order_id, name, value) VALUES (${order.order_id}, '${order.name}', ${order.value})`);
+        // })
+        const values = orders.map(order => `(${order.order_id}, '${order.name}', ${order.value})`).join(', ');
+        console.log(values);
+        await client.query(`INSERT INTO "order" (order_id, name, value) VALUES ${values}`);
     } finally {
         client.release();
     }
