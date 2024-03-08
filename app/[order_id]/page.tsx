@@ -55,7 +55,7 @@ export default async function page({ params }: { params: { order_id: string } })
     })
 
     return (
-        <div className="flex flex-col p-16 gap-4">
+        <div className="flex flex-col p-8 md:p-16 gap-4">
             <div className="flex justify-between align-middle flex-col md:flex-row gap-4">
                 <div className="flex gap-2 text-2xl flex-col md:flex-row">
                     <p className="font-bold">Order no.: </p>

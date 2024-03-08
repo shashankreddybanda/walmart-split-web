@@ -34,7 +34,6 @@ export async function postOrder(orders: Array<{ order_id: string, name: string, 
         //     await client.query(`INSERT INTO "order" (order_id, name, value) VALUES (${order.order_id}, '${order.name}', ${order.value})`);
         // })
         const values = orders.map(order => `(${order.order_id}, '${order.name}', ${order.value})`).join(', ');
-        console.log(values);
         await client.query(`INSERT INTO "order" (order_id, name, value) VALUES ${values}`);
     } finally {
         client.release();
@@ -105,6 +104,25 @@ export async function getOrderUsers(order_id:number) {
         const response = await client.query(`SELECT users FROM "order" WHERE id = ${order_id};`);
     } catch(error){
         console.error(error);
+    }finally {
+        client.release();
+    }
+}
+
+//SELECT DISTINCT order_id FROM "order";
+
+export async function getOrdersList(): Promise<{order_id: string}[]|null> {
+    const client = await pool.connect();
+    const responseSchema = z.array(z.object({
+        order_id: z.string()
+    }))
+    try {
+        const response = await client.query(`SELECT DISTINCT order_id FROM "order"`);
+        responseSchema.parse(response.rows)
+        return response.rows;
+    } catch(error){
+        console.error(error);
+        return null
     }finally {
         client.release();
     }
