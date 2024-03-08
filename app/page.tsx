@@ -21,7 +21,7 @@ export default async function Page() {
         <Button>Submit</Button>
       </form>
       {orders?.map(order => (
-        <Card>
+        <Card key={order.order_id}>
           <CardHeader>
             <CardTitle><Link href={`/${order.order_id}`} >{order.order_id}</Link></CardTitle>
           </CardHeader>
