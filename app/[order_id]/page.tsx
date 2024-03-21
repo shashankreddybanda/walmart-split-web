@@ -3,7 +3,11 @@ import Card from "@/components/card"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { ArrowLeft } from "lucide-react"
 import { revalidatePath } from "next/cache"
+import Link from "next/link"
+
+export const revalidate = 0;
 
 export default async function page({ params }: { params: { order_id: string } }) {
 
@@ -31,14 +35,12 @@ export default async function page({ params }: { params: { order_id: string } })
     async function updateOrder(value: string[], id: number) {
         'use server'
         await updateOrderUser(value, id);
-        console.log(`ARRAY['${value.join('\',\'')}']`);
         revalidatePath(`/${params.order_id}`)
     }
 
     const users: user[] = await getUsers();
 
     let totals = users.map(user => ({user:user.name, value:0}))
-    console.log(totals);
 
     const updateTotals = (userName: string, value: number)=>{
         totals.forEach(total=> {
@@ -57,10 +59,9 @@ export default async function page({ params }: { params: { order_id: string } })
     return (
         <div className="flex flex-col p-8 md:p-16 gap-4">
             <div className="flex justify-between align-middle flex-col md:flex-row gap-4">
-                <div className="flex gap-2 text-2xl flex-col md:flex-row">
-                    <p className="font-bold">Order no.: </p>
-                    <p className="font-light">{params.order_id}</p>
-                </div>
+                <Link href={'/'} className="flex text-2xl flex-col md:flex-row underline items-center">
+                    <ArrowLeft></ArrowLeft> <span className="font-bold flex">Order no.: <span className="font-light">{params.order_id}</span></span>
+                </Link>
                 <div>
                     <Dialog>
                         <DialogTrigger className=" bg-slate-900 text-white rounded-md p-2 hover:bg-slate-800">Add user</DialogTrigger>
