@@ -23,7 +23,7 @@ export default async function Page() {
         <Button>Submit</Button>
       </form>
       {orders?.map(order => (
-        <Link href={`/${order.order_id}`} >
+        <Link href={`/${order.order_id}`} key={order.order_id}>
           <Card key={order.order_id} className=" w-64">
             <CardHeader>
               <CardTitle>{order.order_id}</CardTitle>
