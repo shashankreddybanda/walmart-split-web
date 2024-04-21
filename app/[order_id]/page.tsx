@@ -16,7 +16,7 @@ export default async function page({ params }: { params: { order_id: string } })
         name: string,
         value: number,
         id: number,
-        users: string[]|null
+        users: string[] | null
     }
 
     type user = {
@@ -25,6 +25,7 @@ export default async function page({ params }: { params: { order_id: string } })
     }
 
     const orders: OrderType[] | null = await getOrders(params.order_id);
+    const users: user[] = await getUsers();
 
 
     async function handleSubmit(data: FormData) {
@@ -38,21 +39,27 @@ export default async function page({ params }: { params: { order_id: string } })
         revalidatePath(`/${params.order_id}`)
     }
 
-    const users: user[] = await getUsers();
 
-    let totals = users.map(user => ({user:user.name, value:0}))
+    let totals = users.map(user => ({ user: user.name, value: 0, items: [""] }))
+    let total = 0
 
-    const updateTotals = (userName: string, value: number)=>{
-        totals.forEach(total=> {
-            if(total.user === userName){
+    const updateTotals = (userName: string, orderName: string, value: number) => {
+        totals.forEach(total => {
+            if (total.user === userName) {
                 total.value += value;
+                total.items.push(orderName + ": " + value);
             }
         })
+        total += value;
     }
 
-    orders?.forEach(order=>{
-        order.users?.forEach(user=>{
-            updateTotals(user, order.value/(order.users?.length || 1))
+    orders?.forEach(order => {
+        console.log(order.users);
+        if (order.users) {
+            order.users = order.users.filter(str => str !== "")
+        }
+        order.users?.forEach(user => {
+            updateTotals(user, order.name, order.value / (order.users?.length || 1))
         })
     })
 
@@ -79,8 +86,8 @@ export default async function page({ params }: { params: { order_id: string } })
             </div>
             {orders?.map((order) => <Card updateOrder={updateOrder} key={order.id} order={order} users={users}></Card>)}
             <div className="flex flex-col">
-                <p className="font-bold">Totals</p>
-                {totals.map(total => (<div className="flex gap-2" key={total.user}><p className=" font-semibold">{total.user}:</p> <p>{total.value.toFixed(2)}</p></div>))}
+                <p className="font-bold">Totals: {total.toFixed(2)}</p>
+                {totals.map(total => (<div className="flex flex-col"><div className="flex gap-2" key={total.user}><p className=" font-semibold">{total.user}:</p> <p>{total.value.toFixed(2)}</p></div>{total.items}</div>))}
             </div>
         </div>
     )

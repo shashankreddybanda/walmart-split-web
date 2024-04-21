@@ -33,8 +33,10 @@ export async function postOrder(orders: Array<{ order_id: string, name: string, 
             
         //     await client.query(`INSERT INTO "order" (order_id, name, value) VALUES (${order.order_id}, '${order.name}', ${order.value})`);
         // })
-        const values = orders.map(order => `(${order.order_id}, '${order.name}', ${order.value})`).join(', ');
+        const values = orders.map(order => `(${order.order_id}, '${order.name.slice(0, 20)}', ${order.value})`).join(', ');
         await client.query(`INSERT INTO "order" (order_id, name, value) VALUES ${values}`);
+    }catch(error){
+        console.log(error);
     } finally {
         client.release();
     }
