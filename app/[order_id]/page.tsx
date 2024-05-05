@@ -54,7 +54,6 @@ export default async function page({ params }: { params: { order_id: string } })
     }
 
     orders?.forEach(order => {
-        console.log(order.users);
         if (order.users) {
             order.users = order.users.filter(str => str !== "")
         }
@@ -87,7 +86,7 @@ export default async function page({ params }: { params: { order_id: string } })
             {orders?.map((order) => <Card updateOrder={updateOrder} key={order.id} order={order} users={users}></Card>)}
             <div className="flex flex-col">
                 <p className="font-bold">Totals: {total.toFixed(2)}</p>
-                {totals.map(total => (<div className="flex flex-col"><div className="flex gap-2" key={total.user}><p className=" font-semibold">{total.user}:</p> <p>{total.value.toFixed(2)}</p></div>{total.items}</div>))}
+                {totals.map(total => (<div className="flex flex-col" key={total.user}><div className="flex gap-2" ><p className=" font-semibold">{total.user}:</p> <p>{total.value.toFixed(2)}</p></div>{total.items}</div>))}
             </div>
         </div>
     )
